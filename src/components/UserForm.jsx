@@ -1,8 +1,6 @@
 import React from "react";
 import { useForm } from "react-hook-form";
-import { useHistory } from "react-router-dom";
-
-import "./form.css";
+import { useNavigate } from "react-router-dom";
 
 const UserForm = ({ user, submitText, submitAction }) => {
   const {
@@ -13,7 +11,7 @@ const UserForm = ({ user, submitText, submitAction }) => {
     defaultValues: user || {},
   });
 
-  const history = useHistory();
+  const navigate = useNavigate();
 
   return (
     <div>
@@ -75,7 +73,7 @@ const UserForm = ({ user, submitText, submitAction }) => {
 
         <div>
           <button type="submit"> {submitText} </button>
-          <button type="button" onClick={() => history.goBack()}>
+          <button type="button" onClick={() => navigate(-1)}>
             Back
           </button>
         </div>

@@ -1,15 +1,16 @@
-import React, { useState, createContext } from 'react'
+import React, { useReducer, createContext } from "react";
+import { initialState } from "./reducer";
 
 // Create Context Object
-export const AppContext = createContext()
+export const AppContext = createContext([initialState, () => {}]);
 
 // Create a provider for components to consume and subscribe to changes
 export const AppContextProvider = (props) => {
-  const [flashMessage, setFlashMessage] = useState('')
+    const [state, dispatch] = useReducer(props.reducer, props.initialState);
 
-  return (
-    <AppContext.Provider value={[flashMessage, setFlashMessage]}>
-      {props.children}
-    </AppContext.Provider>
-  )
-}
+    return (
+        <AppContext.Provider value={{ state, dispatch }}>
+            {props.children}
+        </AppContext.Provider>
+    );
+};

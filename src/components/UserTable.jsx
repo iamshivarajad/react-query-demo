@@ -1,10 +1,24 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import axios from 'axios'
+import { useMutation, useQueryClient } from 'react-query'
 
-// import EditIcon from "../icons/edit";
-// import DeleteIcon from "../icons/delete";
+const UserTable = ({ users }) => {
+  const queryClient = useQueryClient();
+  const deleteMutation = useMutation(
+    (id) => axios.delete(`http://localhost:4000/users/${id}`),
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries()
+        alert('Delete Successful!')
+      },
+    }
+  )
 
-const UserTable = ({users}) => {
+  const onDelete = async (id) => {
+    deleteMutation.mutateAsync(id)
+  }
+
   const rows = users.map((user, index) => (
     <tr key={index}>
       <td>{user.id}</td>
@@ -13,12 +27,12 @@ const UserTable = ({users}) => {
       <td>{user.email}</td>
       <td>{user.gender}</td>
       <td>
-        {/* <Link to={`/user/edit/${user.id}`}>
-          <EditIcon />
+        <Link to={`/user/edit/${user.id}`}>
+          Edit
         </Link>
-        <button onClick={() => showDeleteModal(user.id)}>
-          <DeleteIcon />
-        </button> */}
+        <button onClick={() => onDelete(user.id)}>
+          Delete
+        </button>
       </td>
     </tr>
   ));
